@@ -11,11 +11,11 @@ module.exports = (app) => {
             const $ = cheerio.load(res.data);
             $(".ImageStoryTemplate_image-story-container").each((i,element) =>{
                 const results = {};
-                results.articleTitle = $(this).find(".FeedItemHeadline_headline").text();
-                results.articleLink = $(this).find(".FeedItemHeadline_headline").attr("href");
-                results.articleSummary = $(this).find(".FeedItemLede_lede").text();
+                results.articleTitle = $(element).find("a").text();
+                results.articleLink = $(element).find("a").attr("href");
+                results.articleSummary = $(element).find(".FeedItemLede_lede").text();
                 console.log(results);
-                db.Article.create(results);
+                // db.Articles.create(results);
             });
         }).catch(err =>{ if(err) throw err});
         // for(i = 0; i < results.length; i ++){
@@ -27,7 +27,7 @@ module.exports = (app) => {
         res.send("scrape complete");
 
         app.get("/articles", (req, res) =>{
-            db.articles.find({}).then((dbarticle) => res.jason(dbarticle)).catch((err) => res.jason(err));
+            db.Articles.find({}).then((dbarticle) => res.json(dbarticle)).catch((err) => res.json(err));
         });
     });
 };
